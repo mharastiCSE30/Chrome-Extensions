@@ -1,0 +1,207 @@
+option = false;
+
+var validate = function(data){
+
+	if(/^[a-zA-Z]+$/.test(data)){
+		return true;	
+	}
+	return false;
+}
+
+
+$(function(){
+
+
+
+	$(".Dic").click(function(){
+
+		$("#text").text("Dictionary Search:");
+		$("#error").text("");
+	});
+
+
+	$(".Thes").click(function(){
+
+		$("#text").text("Thesarus Search:");
+		$("#error").text("");
+
+	});
+
+
+	$(".Tran").click(function(){
+
+		$("#text").text("Google Translate Search:");
+		$("#error").text("");
+
+	});
+
+	$(".You").click(function(){
+
+
+		$("#text").text("YouTube Search:");
+		$("#error").text("");
+	});
+
+	$(".Ama").click(function(){
+
+		$("#text").text("Amazon Search:");
+		$("#error").text("");
+	});
+
+	$("#tab").click(function(){
+		$("#tab").css("background-color", "lightslategray");
+		$("#window").css("background-color", "lightgray");
+		option=false;
+		$("#error").text("");
+	});
+	$("#window").click(function(){
+		$("#tab").css("background-color", "lightgray");
+		$("#window").css("background-color", "lightslategray");
+		option=true;
+		$("#error").text("");
+
+	});
+
+
+	var generate = function(event) {
+		var data = $("#words").val();
+
+
+		if(data != ""){
+
+			var dictionary = "http://www.dictionary.com/browse/"+data +"?s=t";
+			var thesarus = "http://www.thesarus.com/browse/"+data+"?s=t";
+			var translate = "https://translate.google.com/#auto/en/"+data;
+			var youtube = "https://www.youtube.com/results?search_query="+data;
+			var amazon = "https://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords="+data;
+
+			if($("#text").text() === "Dictionary Search:" ){ 
+				$("#error").text("");
+
+				if(validate(data)){	
+					if(option){
+						var make = {
+							"url": dictionary,
+							"type":"popup",
+							"top":15,
+							"left":15,
+							"width":Math.round(screen.availWidth/1.5),
+							"height": Math.round(screen.availHeight/1.5)
+						};
+						chrome.windows.create(make,function(){});
+					}
+					else{
+						chrome.tabs.create({ url: dictionary });
+					}
+				}
+				else{
+
+					$("#error").text("Please only input alphabet characters (no punctuation,numbers,etc.)");
+					$("#words").val("");
+				}
+
+			}
+
+			if($("#text").text() === "Thesarus Search:" ){ 
+
+				if(validate(data)){
+					if(option){
+						var make = {
+							"url": thesarus,
+							"type":"popup",
+							"top":15,
+							"left":15,
+							"width":Math.round(screen.availWidth/1.5),
+							"height": Math.round(screen.availHeight/1.5)
+						};
+						chrome.windows.create(make,function(){});
+					}
+					else{
+						chrome.tabs.create({ url: thesarus });
+
+					}
+				}
+				else{
+
+					$("#error").text("Please only input alphabet characters (no punctuation,numbers,etc.)");
+					$("#words").val("");
+				}
+			}
+
+
+			if($("#text").text() === "Google Translate Search:"){ 
+
+				if(option){
+					var make = {
+						"url": translate,
+						"type":"popup",
+						"top":15,
+						"left":15,
+						"width":Math.round(screen.availWidth/1.5),
+						"height": Math.round(screen.availHeight/1.5)
+					};
+					chrome.windows.create(make,function(){});
+				}
+				else{
+					chrome.tabs.create({ url: translate });
+				}				
+
+			}
+
+			if($("#text").text() === "Youtube Search:"){ 
+
+				if(option){
+					var make = {
+						"url": youtube,
+						"type":"popup",
+						"top":15,
+						"left":15,
+						"width":Math.round(screen.availWidth/1.5),
+						"height": Math.round(screen.availHeight/1.5)
+					};
+					chrome.windows.create(make,function(){});
+				}
+				else{
+					chrome.tabs.create({ url: youtube });
+				}
+
+			}
+
+
+			if($("#text").text() === "Amazon Search:"){ 
+
+				if(option){
+					var make = {
+						"url": amazon,
+						"type":"popup",
+						"top":15,
+						"left":15,
+						"width":Math.round(screen.availWidth/1.5),
+						"height": Math.round(screen.availHeight/1.5)
+					};
+					chrome.windows.create(make,function(){});
+				}
+				else{
+					chrome.tabs.create({ url: amazon });
+				}
+
+			}
+		}
+	}
+
+
+	$("#wordChoice").on("click",generate);	
+	$("input").keypress(function(event){	
+
+
+		if(event.which == 13){
+
+
+			generate(event);
+		}
+	});
+
+});
+
+
+
