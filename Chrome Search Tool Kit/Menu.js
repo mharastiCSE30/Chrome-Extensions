@@ -182,7 +182,7 @@ $(function(){
 			}
 
 			//For YouTube searching
-			if($("#text").text() === "Youtube Search:"){ 
+			if($("#text").text() === "YouTube Search:"){ 
 
 				//Creates window data and new window itself
 				if(option){
